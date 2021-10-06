@@ -51,7 +51,7 @@ impl ScoreBoard {
                 env::log(b"Inserted First Time")}
 
     }}
-
+// Sorting by key should be sorted by value 
     pub fn lowest_scorer(&self) -> String {
         match self.table.min(){
             Some(lowest_scorer_id) =>{
