@@ -38,21 +38,21 @@ impl ScoreBoard {
     }
 
     pub fn update_score(&mut self, score: ScoreType, name: String) {
-        let existing_score: Option<ScoreType> = self.table.get(&name.clone());
-        if existing_score.is_some() {
-            env::log(b"Checking if score has increased");
-            if self.table.get(&name.clone()) < Some(score){
-                self.table.insert(&name.clone(), &score);
-                env::log(b"Score Updated")
-            }
-            else{
-                env::log(b"Score Same")
-            }
-        }
-        self.table.insert(&name.into(), &score);
-    }
+            match self.table.get(&name.clone()){
+                Some(score_current) => {
+                    if score_current < score{
+                    env::log(b" Updated Score");
+                    self.table.insert(&name.clone(), &score);
+                } else{
+                    env::log(b"Score Not Updated")
+                }
+                },
+                None => {self.table.insert(&name.into(), &score);
+                env::log(b"Inserted First Time")}
 
-    pub fn lowest_scorer(&mut self) -> String {
+    }}
+
+    pub fn lowest_scorer(&self) -> String {
         match self.table.min(){
             Some(lowest_scorer_id) =>{
                 lowest_scorer_id
@@ -61,8 +61,8 @@ impl ScoreBoard {
         }
     }
 
-    pub fn highest_scorer(&mut self) -> String {
-        match self.table.min(){
+    pub fn highest_scorer(&self) -> String {
+        match self.table.max(){
             Some(highest_scorer_id) =>{
                 highest_scorer_id
         },
